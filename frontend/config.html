@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurare Prezențe - Săptămâni 1-7</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .week-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+        }
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+        }
+        .week-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .week-type {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .subject-group {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        .subject-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .subject-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+        .subject-frequency {
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: #e8f4f8;
+            color: #0066cc;
+        }
+        .class-option {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            margin: 5px 0;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        .class-option:hover {
+            border-color: #667eea;
+        }
+        .class-option.selected {
+            border-color: #4CAF50;
+            background: #f0fff4;
+        }
+        .class-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+        .class-info {
+            flex: 1;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        .class-detail {
+            font-size: 13px;
+            color: #666;
+        }
+        .save-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .btn-large {
+            padding: 15px 40px;
+            font-size: 16px;
+        }
+        .stats-box {
+            background: #e8f4f8;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .stats-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
+        .progress-indicator {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        .progress-good {
+            background: #4CAF50;
+            color: white;
+        }
+        .progress-warning {
+            background: #FF9800;
+            color: white;
+        }
+        .progress-danger {
+            background: #F44336;
+            color: white;
+        }
+    </style>
+</head>
+<body style="padding-bottom: 100px;">
+    <div class="container" style="max-width: 1400px;">
+        <header>
+            <h1>🎯 Configurare Prezențe - Săptămâni 1-7</h1>
+            <p style="opacity: 0.9; margin-top: 10px;">
+                Marchează la ce ore ai fost prezent în fiecare săptămână trecută
+            </p>
+        </header>
+
+        <div style="padding: 30px;">
+            <div class="info-text">
+                📌 <strong>Important:</strong> Bifează DOAR orele la care ai fost prezent efectiv.
+                Sistemul va calcula automat ce ore sunt obligatorii pentru săptămânile 8-14.
+            </div>
+
+            <div id="weeksContainer">
+                <div class="loading">Se încarcă datele...</div>
+            </div>
+
+            <div class="stats-box" id="statsBox" style="display: none;">
+                <h3>📊 Statistici Prezențe</h3>
+                <div id="statsContent"></div>
+            </div>
+        </div>
+
+        <div class="save-section">
+            <button class="btn btn-secondary btn-large" onclick="calculateStats()">
+                📊 Calculează Statistici
+            </button>
+            <button class="btn btn-primary btn-large" onclick="saveAttendance()">
+                💾 Salvează și Vezi Recomandări
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let attendance = {};
+
+        // Load schedule from JSON
+        fetch('/data/schedule_complete.json')
+            .then(res => res.json())
+            .then(data => {
+                renderWeeks(data);
+            })
+            .catch(err => {
+                console.error('Error loading schedule:', err);
+                document.getElementById('weeksContainer').innerHTML =
+                    '<div class="empty-state"><h3>Eroare la încărcarea datelor</h3></div>';
+            });
+
+        function renderWeeks(data) {
+            const container = document.getElementById('weeksContainer');
+            let html = '';
+
+            // Render weeks 1-7
+            for (let week = 1; week <= 7; week++) {
+                const weekType = week % 2 === 1 ? 'SI' : 'SP';
+                const weekLabel = weekType === 'SI' ? 'IMPARĂ' : 'PARĂ';
+
+                html += `
+                    <div class="week-section" data-week="${week}">
+                        <div class="week-header">
+                            <div class="week-title">Săptămâna ${week}</div>
+                            <div class="week-type">${weekLabel} (${weekType})</div>
+                        </div>
+                `;
+
+                // Render subjects
+                for (const [key, subject] of Object.entries(data.subjects)) {
+                    // Skip optional subjects
+                    if (subject.frequency === 'optional') continue;
+
+                    html += `
+                        <div class="subject-group">
+                            <div class="subject-header">
+                                <div class="subject-name">${subject.name}</div>
+                                <div class="subject-frequency">
+                                    ${subject.frequency === 'weekly' ? 'Săptămânal' : 'O dată la 2 săptămâni'}
+                                </div>
+                            </div>
+                    `;
+
+                    // Filter classes for this week
+                    const availableClasses = subject.classes.filter(cls => {
+                        if (subject.frequency === 'weekly') return true;
+                        if (subject.frequency === 'biweekly') {
+                            return !cls.week_type || cls.week_type === weekType;
+                        }
+                        return true;
+                    });
+
+                    availableClasses.forEach(cls => {
+                        const classId = `${week}_${cls.id}`;
+                        html += `
+                            <div class="class-option" data-class-id="${classId}">
+                                <input type="checkbox"
+                                       class="class-checkbox"
+                                       id="${classId}"
+                                       onchange="toggleClass('${classId}', this.checked)">
+                                <label for="${classId}" class="class-info">
+                                    <span class="class-detail"><strong>📍</strong> ${cls.room}</span>
+                                    <span class="class-detail"><strong>🕐</strong> ${cls.time_start} - ${cls.time_end}</span>
+                                    <span class="class-detail"><strong>📅</strong> ${cls.day}</span>
+                                    <span class="class-detail"><strong>🏷️</strong> ${cls.type}</span>
+                                </label>
+                            </div>
+                        `;
+                    });
+
+                    html += `</div>`;
+                }
+
+                html += `</div>`;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function toggleClass(classId, checked) {
+            const element = document.querySelector(`[data-class-id="${classId}"]`);
+            if (checked) {
+                element.classList.add('selected');
+                attendance[classId] = true;
+            } else {
+                element.classList.remove('selected');
+                delete attendance[classId];
+            }
+        }
+
+        function calculateStats() {
+            fetch('/data/schedule_complete.json')
+                .then(res => res.json())
+                .then(data => {
+                    const stats = {};
+
+                    for (const [key, subject] of Object.entries(data.subjects)) {
+                        if (subject.frequency === 'optional') continue;
+
+                        const subjectAttendance = Object.keys(attendance).filter(id =>
+                            id.includes(subject.acronym)
+                        ).length;
+
+                        stats[subject.name] = {
+                            current: subjectAttendance,
+                            required: subject.required_count,
+                            remaining: subject.required_count - subjectAttendance
+                        };
+                    }
+
+                    displayStats(stats);
+                });
+        }
+
+        function displayStats(stats) {
+            const statsBox = document.getElementById('statsBox');
+            const statsContent = document.getElementById('statsContent');
+
+            let html = '';
+            for (const [name, stat] of Object.entries(stats)) {
+                const percentage = Math.round((stat.current / stat.required) * 100);
+                let progressClass = 'progress-good';
+                if (percentage < 30) progressClass = 'progress-danger';
+                else if (percentage < 60) progressClass = 'progress-warning';
+
+                html += `
+                    <div class="stats-row">
+                        <span><strong>${name}</strong></span>
+                        <span>
+                            <span class="progress-indicator ${progressClass}">
+                                ${stat.current}/${stat.required} (${percentage}%)
+                            </span>
+                            <span style="margin-left: 10px; color: #666;">
+                                Rămase: ${stat.remaining}
+                            </span>
+                        </span>
+                    </div>
+                `;
+            }
+
+            statsContent.innerHTML = html;
+            statsBox.style.display = 'block';
+            statsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function saveAttendance() {
+            if (Object.keys(attendance).length === 0) {
+                alert('❌ Nu ai bifat nicio oră! Marchează prezențele tale mai întâi.');
+                return;
+            }
+
+            try {
+                // Save to backend
+                const response = await fetch('/api/attendance/bulk', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ attendance })
+                });
+
+                if (response.ok) {
+                    alert('✅ Prezențe salvate cu succes!');
+                    window.location.href = '/recommendations.html';
+                } else {
+                    alert('❌ Eroare la salvare. Încearcă din nou.');
+                }
+            } catch (err) {
+                console.error('Error saving:', err);
+                alert('❌ Eroare la salvare. Încearcă din nou.');
+            }
+        }
+    </script>
+</body>
+</html>

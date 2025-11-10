@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Orar - Status Prezențe</title>
+    <script>
+        // Redirect to dashboard
+        window.location.href = '/dashboard.html';
+    </script>
+</head>
+<body>
+    <div style="text-align: center; padding: 50px;">
+        <h2>Redirecting to dashboard...</h2>
+    </div>
+</body>
+</html>
+
+<!-- ORIGINAL CONTENT KEPT FOR REFERENCE
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ORAR Facultate - Sistem Gestionare Prezențe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 ORAR Facultate - Sistem Gestionare Prezențe</h1>
+            <div class="week-info" id="weekInfo">
+                <span id="weekNumber">Săptămâna ...</span>
+                <span id="weekType">-</span>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn" onclick="window.location.href='/setup-schedule.html'" style="background: #4CAF50; color: white;">
+                📅 1. Creează Orar
+            </button>
+            <button class="tab-btn" onclick="window.location.href='/attendance-grid.html'" style="background: #FF9800; color: white;">
+                📋 2. Marcă Prezențe
+            </button>
+            <button class="tab-btn" onclick="window.location.href='/recommendations.html'" style="background: #667eea; color: white;">
+                🎯 3. Vezi Recomandări
+            </button>
+        </nav>
+
+        <!-- Setup Tab -->
+        <div id="setup" class="tab-content active">
+            <h2>Configurare Prezențe Trecute</h2>
+            <p class="info-text">Marchează orele la care ai fost prezent. Dacă nu marchezi nimic, se consideră prezent automat.</p>
+
+            <div id="classesGrid" class="classes-grid">
+                <div class="loading">Se încarcă...</div>
+            </div>
+
+            <div class="actions">
+                <button id="saveBtn" class="btn btn-primary">💾 Salvează Prezențe</button>
+                <button id="resetBtn" class="btn btn-secondary">🔄 Resetare</button>
+            </div>
+        </div>
+
+        <!-- Status Tab -->
+        <div id="status" class="tab-content">
+            <h2>Status Prezențe per Materie</h2>
+
+            <div id="statusContainer" class="status-container">
+                <div class="loading">Se încarcă...</div>
+            </div>
+        </div>
+
+        <!-- Required Tab -->
+        <div id="required" class="tab-content">
+            <h2>Ore Obligatorii Săptămâna Aceasta</h2>
+            <p class="info-text">Aceste ore sunt obligatorii de efectuat în săptămâna curentă.</p>
+
+            <div id="requiredContainer" class="required-container">
+                <div class="loading">Se încarcă...</div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Bot Telegram: <code>@OrarFacultatBot</code> - Pentru comenzi rapide și notificări</p>
+            <p>Semestrul a început pe 29 septembrie 2025</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

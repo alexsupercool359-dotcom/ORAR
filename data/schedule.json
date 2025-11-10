@@ -1,0 +1,181 @@
+{
+  "metadata": {
+    "year": "II",
+    "semester": "I",
+    "academic_year": "2025-2026",
+    "start_date": "2025-09-29",
+    "groups": ["6201", "6202", "6203", "6204", "6205", "6206", "6207"]
+  },
+  "classes": [
+    {
+      "id": "ELECTRONICA_L_6207",
+      "name": "ELECTRONICA",
+      "type": "C",
+      "day": "LUNI",
+      "time_start": "8:00",
+      "time_end": "10:00",
+      "groups": ["6201", "6202", "6203", "6204"],
+      "room": "E2",
+      "frequency": "weekly",
+      "required": true,
+      "description": "Electronics course"
+    },
+    {
+      "id": "ELECTRONICA_L_6207_LUNI",
+      "name": "ELECTRONICA",
+      "type": "C",
+      "day": "LUNI",
+      "time_start": "18:00",
+      "time_end": "20:00",
+      "groups": ["6206", "6207"],
+      "room": "E2",
+      "frequency": "weekly",
+      "required": true
+    },
+    {
+      "id": "TS_L_6207",
+      "name": "TEORIA SISTEMELOR",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "8:00",
+      "time_end": "10:00",
+      "groups": ["6207"],
+      "room": "E-302",
+      "frequency": "weekly",
+      "required": true,
+      "description": "Systems theory lab"
+    },
+    {
+      "id": "TS_C_6206",
+      "name": "TEORIA SISTEMELOR",
+      "type": "C",
+      "day": "LUNI",
+      "time_start": "16:00",
+      "time_end": "18:00",
+      "groups": ["6205", "6206"],
+      "room": "E2",
+      "frequency": "weekly",
+      "required": true
+    },
+    {
+      "id": "TCE_S_E410_SI",
+      "name": "TCE 1",
+      "type": "S",
+      "day": "LUNI",
+      "time_start": "12:00",
+      "time_end": "13:00",
+      "room": "E410",
+      "week_type": "SI",
+      "frequency": "biweekly",
+      "required": true
+    },
+    {
+      "id": "TCE_S_E410_SP",
+      "name": "TCE 1",
+      "type": "S",
+      "day": "LUNI",
+      "time_start": "12:00",
+      "time_end": "13:00",
+      "room": "E410",
+      "week_type": "SP",
+      "frequency": "biweekly",
+      "required": true
+    },
+    {
+      "id": "CF_L_E402_SI",
+      "name": "CALITATE ŞI FIABILITATE",
+      "type": "L",
+      "day": "MARȚI",
+      "time_start": "8:00",
+      "time_end": "11:00",
+      "room": "E402",
+      "week_type": "SI",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "CF_L_E402_SP",
+      "name": "CALITATE ŞI FIABILITATE",
+      "type": "L",
+      "day": "MARȚI",
+      "time_start": "8:00",
+      "time_end": "11:00",
+      "room": "E402",
+      "week_type": "SP",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "MN_L_ETH103_SI",
+      "name": "METODE NUMERICE",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "16:00",
+      "room": "ETH-103",
+      "week_type": "SI",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "MN_L_ETH103_SP",
+      "name": "METODE NUMERICE",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "16:00",
+      "room": "ETH-103",
+      "week_type": "SP",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "TW_L_E312_SI",
+      "name": "TEHNOLOGII WEB",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "15:00",
+      "room": "E-312",
+      "week_type": "SI",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "TW_L_E312_SP",
+      "name": "TEHNOLOGII WEB",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "15:00",
+      "room": "E-312",
+      "week_type": "SP",
+      "frequency": "biweekly",
+      "required": false
+    },
+    {
+      "id": "ME_L_E002_SI",
+      "name": "MATERIALE ELECTROTEHNICE",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "16:00",
+      "room": "E-002",
+      "week_type": "SI",
+      "frequency": "weekly",
+      "required": true
+    },
+    {
+      "id": "ME_L_E002_SP",
+      "name": "MATERIALE ELECTROTEHNICE",
+      "type": "L",
+      "day": "LUNI",
+      "time_start": "14:00",
+      "time_end": "16:00",
+      "room": "E-002",
+      "week_type": "SP",
+      "frequency": "weekly",
+      "required": true
+    }
+  ]
+}

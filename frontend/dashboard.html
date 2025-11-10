@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Orar - Status Prezențe</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+        .hero h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .action-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid #e0e0e0;
+        }
+        .action-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            border-color: #667eea;
+        }
+        .action-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        .action-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .action-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        .recommendations-section {
+            margin-top: 30px;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .refresh-btn {
+            padding: 8px 16px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .refresh-btn:hover {
+            background: #5568d3;
+        }
+        .rec-card {
+            background: white;
+            margin: 15px 0;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid #667eea;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .rec-card.complete {
+            border-left-color: #4CAF50;
+            background: #f0fff4;
+        }
+        .rec-card.warning {
+            border-left-color: #FF9800;
+            background: #fff9e6;
+        }
+        .rec-card.critical {
+            border-left-color: #F44336;
+            background: #ffebee;
+        }
+        .rec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .rec-subject {
+            font-size: 22px;
+            font-weight: bold;
+            color: #333;
+        }
+        .rec-badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        .badge-complete {
+            background: #4CAF50;
+            color: white;
+        }
+        .badge-warning {
+            background: #FF9800;
+            color: white;
+        }
+        .badge-critical {
+            background: #F44336;
+            color: white;
+        }
+        .rec-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+        .rec-stat {
+            text-align: center;
+            padding: 15px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+        }
+        .rec-stat-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .rec-stat-label {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .rec-message {
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-size: 15px;
+        }
+        .next-classes {
+            margin-top: 15px;
+        }
+        .next-class-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #555;
+            font-size: 14px;
+        }
+        .class-item {
+            padding: 10px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            margin: 8px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .class-info {
+            display: flex;
+            gap: 15px;
+            font-size: 13px;
+            color: #666;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 12px;
+        }
+        .empty-state h3 {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .empty-state a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 1400px;">
+        <div style="padding: 30px;">
+            <div class="hero">
+                <h1>📚 Dashboard Orar</h1>
+                <p id="weekInfo">Săptămâna curentă: 7 | Săptămâni rămase: 7</p>
+            </div>
+
+            <div class="quick-actions">
+                <div class="action-card" onclick="viewCurrentSchedule()">
+                    <div class="action-icon">👀</div>
+                    <div class="action-title">Vezi Orar</div>
+                    <div class="action-desc">Orarul tău actual</div>
+                </div>
+                <div class="action-card" onclick="window.location.href='/setup-schedule.html?edit=true'">
+                    <div class="action-icon">✏️</div>
+                    <div class="action-title">Editează Orar</div>
+                    <div class="action-desc">Modifică orele tale</div>
+                </div>
+                <div class="action-card" onclick="window.location.href='/attendance-grid.html'">
+                    <div class="action-icon">📋</div>
+                    <div class="action-title">Prezențe</div>
+                    <div class="action-desc">Vezi și modifică</div>
+                </div>
+                <div class="action-card" onclick="window.open('https://t.me/YOUR_BOT_USERNAME', '_blank')">
+                    <div class="action-icon">💬</div>
+                    <div class="action-title">Bot Telegram</div>
+                    <div class="action-desc">Notificări live</div>
+                </div>
+            </div>
+
+            <!-- Current Schedule Preview -->
+            <div class="recommendations-section" style="margin-top: 20px;">
+                <div class="section-header">
+                    <div class="section-title">📅 Orarul Tău</div>
+                    <button class="refresh-btn" onclick="loadCurrentSchedule()">
+                        🔄 Reîmprospătează
+                    </button>
+                </div>
+
+                <div id="scheduleContainer">
+                    <div class="loading" style="text-align: center; padding: 40px;">
+                        Se încarcă orarul...
+                    </div>
+                </div>
+            </div>
+
+            <div class="recommendations-section">
+                <div class="section-header">
+                    <div class="section-title">📊 Status Prezențe și Recomandări</div>
+                    <button class="refresh-btn" onclick="loadRecommendations()">
+                        🔄 Reîmprospătează
+                    </button>
+                </div>
+
+                <div id="recommendationsContainer">
+                    <div class="loading" style="text-align: center; padding: 40px;">
+                        Se încarcă datele...
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load data on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            loadCurrentSchedule();
+            loadRecommendations();
+        });
+
+        async function loadCurrentSchedule() {
+            try {
+                const response = await fetch('/api/schedule/personal');
+
+                if (!response.ok) {
+                    throw new Error('No schedule found');
+                }
+
+                const schedule = await response.json();
+                renderSchedule(schedule);
+            } catch (err) {
+                console.error('Error loading schedule:', err);
+                document.getElementById('scheduleContainer').innerHTML = `
+                    <div class="empty-state">
+                        <h3>❌ Nu ai încă un orar configurat</h3>
+                        <p style="color: #666; margin: 15px 0;">
+                            Creează-ți orarul pentru a vedea toate orele tale aici.
+                        </p>
+                        <a href="/setup-schedule.html" style="color: #667eea; font-weight: 600;">
+                            👉 Creează Orar Acum
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function renderSchedule(schedule) {
+            const container = document.getElementById('scheduleContainer');
+            const days = ['LUNI', 'MARTI', 'MIERCURI', 'JOI', 'VINERI'];
+
+            // Group classes by day
+            const classesByDay = {};
+            days.forEach(day => classesByDay[day] = []);
+
+            Object.entries(schedule).forEach(([key, subject]) => {
+                if (subject.classes && subject.classes.length > 0) {
+                    subject.classes.forEach(cls => {
+                        classesByDay[cls.day].push({
+                            ...cls,
+                            subjectName: subject.name,
+                            subjectAcronym: subject.acronym,
+                            frequency: subject.frequency,
+                            isCustom: subject.isCustom || false
+                        });
+                    });
+                }
+            });
+
+            // Sort classes by time within each day
+            days.forEach(day => {
+                classesByDay[day].sort((a, b) => a.time_start.localeCompare(b.time_start));
+            });
+
+            let html = '<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">';
+
+            days.forEach(day => {
+                const dayClasses = classesByDay[day];
+
+                html += `
+                    <div style="background: white; padding: 20px; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                        <h3 style="color: #667eea; margin-bottom: 15px; font-size: 18px;">
+                            📅 ${day.charAt(0) + day.slice(1).toLowerCase()}
+                        </h3>
+                `;
+
+                if (dayClasses.length === 0) {
+                    html += '<p style="color: #999; font-size: 14px;">Nu ai ore programate</p>';
+                } else {
+                    dayClasses.forEach(cls => {
+                        const customBadge = cls.isCustom ? '<span style="background: #FF6B6B; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-left: 8px;">CUSTOM</span>' : '';
+                        const weekTypeBadge = cls.week_type ? `<span style="background: #FF9800; color: white; padding: 2px 6px; border-radius: 4px; font-size: 11px; margin-left: 4px;">${cls.week_type}</span>` : '';
+
+                        html += `
+                            <div style="margin: 12px 0; padding: 12px; background: #f9f9f9; border-radius: 8px; border-left: 4px solid #667eea;">
+                                <div style="font-weight: 600; color: #333; margin-bottom: 6px;">
+                                    ${cls.subjectName} ${customBadge}
+                                </div>
+                                <div style="font-size: 13px; color: #666; display: flex; flex-wrap: wrap; gap: 10px;">
+                                    <span>🕐 ${cls.time_start}-${cls.time_end}</span>
+                                    <span>📍 ${cls.room}</span>
+                                    <span>🏷️ ${cls.type}</span>
+                                    ${weekTypeBadge}
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += '</div>';
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function viewCurrentSchedule() {
+            const container = document.getElementById('scheduleContainer');
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        async function loadRecommendations() {
+            try {
+                const response = await fetch('/api/recommendations');
+
+                if (!response.ok) {
+                    throw new Error('No data found');
+                }
+
+                const data = await response.json();
+                renderRecommendations(data);
+            } catch (err) {
+                console.error('Error:', err);
+                document.getElementById('recommendationsContainer').innerHTML = `
+                    <div class="empty-state">
+                        <h3>❌ Nu ai configurat încă sistemul</h3>
+                        <p style="color: #666; margin: 15px 0;">
+                            Pentru a vedea recomandările, trebuie să parcurgi pașii:
+                        </p>
+                        <div style="margin: 20px 0;">
+                            <a href="/setup-schedule.html">1. Creează Orarul →</a><br>
+                            <a href="/attendance-grid.html" style="margin-top: 10px; display: inline-block;">
+                                2. Marcă Prezențele →
+                            </a>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function renderRecommendations(data) {
+            const container = document.getElementById('recommendationsContainer');
+            let html = '';
+
+            // Sort by status (critical first)
+            const sorted = Object.entries(data.recommendations).sort((a, b) => {
+                const statusOrder = { 'needed': 0, 'warning': 1, 'complete': 2 };
+                return statusOrder[a[1].status] - statusOrder[b[1].status];
+            });
+
+            if (sorted.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <h3>🎉 Nu sunt date disponibile</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            sorted.forEach(([name, rec]) => {
+                let cardClass = 'rec-card';
+                let badgeClass = 'rec-badge';
+                let badgeText = '';
+                let message = '';
+
+                if (rec.status === 'complete') {
+                    cardClass += ' complete';
+                    badgeClass += ' badge-complete';
+                    badgeText = '✅ Complet';
+                    message = `🎉 <strong>Excelent!</strong> Ai suficiente prezențe la ${name}. Păstrează ritmul!`;
+                } else if (rec.status === 'warning') {
+                    cardClass += ' warning';
+                    badgeClass += ' badge-warning';
+                    badgeText = `⚠️ ${rec.remaining} rămân`;
+                    message = `⚡ <strong>Atenție!</strong> Mai ai nevoie de ${rec.remaining} prezență${rec.remaining > 1 ? 'e' : ''} la ${name}. Planifică-te!`;
+                } else {
+                    cardClass += ' critical';
+                    badgeClass += ' badge-critical';
+                    badgeText = `❌ ${rec.remaining} URGENT`;
+                    message = `🚨 <strong>CRITIC!</strong> Trebuie să mergi de ${rec.remaining} ori la ${name} în următoarele ${rec.weeksRemaining} săptămâni!`;
+                }
+
+                const percentage = Math.round((rec.attended / rec.required) * 100);
+
+                html += `
+                    <div class="${cardClass}">
+                        <div class="rec-header">
+                            <div class="rec-subject">${name}</div>
+                            <div class="${badgeClass}">${badgeText}</div>
+                        </div>
+
+                        <div class="rec-stats">
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.attended}</div>
+                                <div class="rec-stat-label">Prezențe</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.required}</div>
+                                <div class="rec-stat-label">Necesar</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.remaining}</div>
+                                <div class="rec-stat-label">Rămân</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${percentage}%</div>
+                                <div class="rec-stat-label">Progres</div>
+                            </div>
+                        </div>
+
+                        <div class="rec-message">${message}</div>
+
+                        ${rec.classes.length > 0 ? `
+                        <div class="next-classes">
+                            <div class="next-class-title">📅 Ore disponibile (primele 3):</div>
+                            ${rec.classes.slice(0, 3).map(cls => `
+                                <div class="class-item">
+                                    <div class="class-info">
+                                        <span><strong>📅</strong> ${cls.day}</span>
+                                        <span><strong>🕐</strong> ${cls.time_start}-${cls.time_end}</span>
+                                        <span><strong>📍</strong> ${cls.room}</span>
+                                        <span><strong>🏷️</strong> ${cls.type}</span>
+                                        ${cls.week_type ? `<span><strong>📌</strong> ${cls.week_type}</span>` : ''}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

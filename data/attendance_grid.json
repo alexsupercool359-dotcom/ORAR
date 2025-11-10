@@ -1,0 +1,130 @@
+{
+  "E_MARTI_10:00_0_week1": {
+    "subject": "E",
+    "checked": true
+  },
+  "E_MARTI_10:00_0_week2": {
+    "subject": "E",
+    "checked": true
+  },
+  "E_MARTI_10:00_0_week3": {
+    "subject": "E",
+    "checked": true
+  },
+  "E_MARTI_10:00_0_week4": {
+    "subject": "E",
+    "checked": true
+  },
+  "E_MARTI_10:00_0_week6": {
+    "subject": "E",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week1": {
+    "subject": "TS",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week2": {
+    "subject": "TS",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week3": {
+    "subject": "TS",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week4": {
+    "subject": "TS",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week5": {
+    "subject": "TS",
+    "checked": true
+  },
+  "TS_JOI_08:00_0_week6": {
+    "subject": "TS",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week1": {
+    "subject": "ME",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week2": {
+    "subject": "ME",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week3": {
+    "subject": "ME",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week4": {
+    "subject": "ME",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week5": {
+    "subject": "ME",
+    "checked": true
+  },
+  "ME_MIERCURI_14:00_0_week6": {
+    "subject": "ME",
+    "checked": true
+  },
+  "CF_LUNI_08:00_0_week5": {
+    "subject": "CF",
+    "checked": true
+  },
+  "CF_LUNI_08:00_0_week3": {
+    "subject": "CF",
+    "checked": true
+  },
+  "CF_LUNI_08:00_0_week1": {
+    "subject": "CF",
+    "checked": true
+  },
+  "MN_LUNI_16:00_0_week7": {
+    "subject": "MN",
+    "checked": true
+  },
+  "MN_LUNI_16:00_0_week1": {
+    "subject": "MN",
+    "checked": true
+  },
+  "MN_LUNI_16:00_0_week3": {
+    "subject": "MN",
+    "checked": true
+  },
+  "TCE1_LUNI_14:00_0_week1": {
+    "subject": "TCE1",
+    "checked": true
+  },
+  "TCE1_LUNI_14:00_0_week5": {
+    "subject": "TCE1",
+    "checked": true
+  },
+  "TCE1_LUNI_14:00_0_week7": {
+    "subject": "TCE1",
+    "checked": true
+  },
+  "TW_MARTI_14:00_0_week5": {
+    "subject": "TW",
+    "checked": true
+  },
+  "TW_MARTI_14:00_0_week3": {
+    "subject": "TW",
+    "checked": true
+  },
+  "TW_MARTI_14:00_0_week1": {
+    "subject": "TW",
+    "checked": true
+  },
+  "CUSTOM_TCE1_0_JOI_14:00_week2": {
+    "subject": "CUSTOM_TCE1_0",
+    "checked": true
+  },
+  "CUSTOM_TCE1_0_JOI_14:00_week4": {
+    "subject": "CUSTOM_TCE1_0",
+    "checked": true
+  },
+  "CUSTOM_TCE1_0_JOI_14:00_week6": {
+    "subject": "CUSTOM_TCE1_0",
+    "checked": true
+  }
+}

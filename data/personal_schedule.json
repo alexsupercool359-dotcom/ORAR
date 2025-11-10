@@ -1,0 +1,191 @@
+{
+  "E": {
+    "name": "ELECTRONICA",
+    "acronym": "E",
+    "frequency": "weekly",
+    "classes": [
+      {
+        "id": "E_MARTI_10:00_0",
+        "day": "MARTI",
+        "time_start": "10:00",
+        "time_end": "12:00",
+        "room": "I-15",
+        "type": "L",
+        "week_type": null
+      },
+      {
+        "id": "E_MIERCURI_18:00_1",
+        "day": "MIERCURI",
+        "time_start": "18:00",
+        "time_end": "20:00",
+        "room": "I-15",
+        "type": "L",
+        "week_type": null
+      }
+    ]
+  },
+  "TS": {
+    "name": "TEORIA SISTEMELOR",
+    "acronym": "TS",
+    "frequency": "weekly",
+    "classes": [
+      {
+        "id": "TS_JOI_08:00_0",
+        "day": "JOI",
+        "time_start": "08:00",
+        "time_end": "10:00",
+        "room": "E-302",
+        "type": "L",
+        "week_type": null
+      },
+      {
+        "id": "TS_JOI_10:00_1",
+        "day": "JOI",
+        "time_start": "10:00",
+        "time_end": "12:00",
+        "room": "E-302",
+        "type": "L",
+        "week_type": null
+      }
+    ]
+  },
+  "ME": {
+    "name": "MATERIALE ELECTROTEHNICE",
+    "acronym": "ME",
+    "frequency": "weekly",
+    "classes": [
+      {
+        "id": "ME_MIERCURI_14:00_0",
+        "day": "MIERCURI",
+        "time_start": "14:00",
+        "time_end": "17:00",
+        "room": "E-002",
+        "type": "L",
+        "week_type": null
+      },
+      {
+        "id": "ME_MIERCURI_17:00_1",
+        "day": "MIERCURI",
+        "time_start": "17:00",
+        "time_end": "20:00",
+        "room": "E-002",
+        "type": "L",
+        "week_type": null
+      }
+    ]
+  },
+  "CF": {
+    "name": "CALITATE ȘI FIABILITATE",
+    "acronym": "CF",
+    "frequency": "biweekly",
+    "classes": [
+      {
+        "id": "CF_MARTI_08:00_0",
+        "day": "MARTI",
+        "time_start": "08:00",
+        "time_end": "10:00",
+        "room": "E402",
+        "type": "L",
+        "week_type": "SI"
+      },
+      {
+        "id": "CF_MARTI_08:00_1",
+        "day": "MARTI",
+        "time_start": "08:00",
+        "time_end": "10:00",
+        "room": "E402",
+        "type": "L",
+        "week_type": "SP"
+      }
+    ]
+  },
+  "MN": {
+    "name": "METODE NUMERICE",
+    "acronym": "MN",
+    "frequency": "biweekly",
+    "classes": [
+      {
+        "id": "MN_LUNI_16:00_0",
+        "day": "LUNI",
+        "time_start": "16:00",
+        "time_end": "18:00",
+        "room": "E-302",
+        "type": "L",
+        "week_type": "SI"
+      },
+      {
+        "id": "MN_JOI_14:00_1",
+        "day": "JOI",
+        "time_start": "14:00",
+        "time_end": "16:00",
+        "room": "E-302",
+        "type": "L",
+        "week_type": "SP"
+      }
+    ]
+  },
+  "TCE1": {
+    "name": "TEORIA CIRCUITELOR ELECTRICE 1",
+    "acronym": "TCE1",
+    "frequency": "biweekly",
+    "classes": [
+      {
+        "id": "TCE1_LUNI_14:00_0",
+        "day": "LUNI",
+        "time_start": "14:00",
+        "time_end": "16:00",
+        "room": "E402",
+        "type": "S",
+        "week_type": "SI"
+      }
+    ]
+  },
+  "TW": {
+    "name": "TEHNOLOGII WEB",
+    "acronym": "TW",
+    "frequency": "biweekly",
+    "classes": [
+      {
+        "id": "TW_MARTI_14:00_0",
+        "day": "MARTI",
+        "time_start": "14:00",
+        "time_end": "16:00",
+        "room": "E312",
+        "type": "L",
+        "week_type": "SI"
+      },
+      {
+        "id": "TW_MARTI_14:00_1",
+        "day": "MARTI",
+        "time_start": "14:00",
+        "time_end": "16:00",
+        "room": "E312",
+        "type": "L",
+        "week_type": "SP"
+      }
+    ]
+  },
+  "MS": {
+    "name": "MATEMATICI SPECIALE",
+    "acronym": "MS",
+    "frequency": "weekly",
+    "classes": []
+  },
+  "CUSTOM_TCE1_0": {
+    "name": "TCE-Labrator",
+    "acronym": "TCE1",
+    "frequency": "biweekly",
+    "isCustom": true,
+    "classes": [
+      {
+        "id": "CUSTOM_TCE1_0_JOI_14:00",
+        "day": "JOI",
+        "time_start": "14:00",
+        "time_end": "16:00",
+        "room": "E-102",
+        "type": "L",
+        "week_type": "SP"
+      }
+    ]
+  }
+}

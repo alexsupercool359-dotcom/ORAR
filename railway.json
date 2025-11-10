@@ -1,0 +1,14 @@
+{
+  "name": "ORAR Facultate",
+  "description": "Sistem de gestionare a orarului și prezențelor cu Telegram bot",
+  "variables": {
+    "TELEGRAM_TOKEN": {
+      "description": "Token pentru Telegram Bot (obție de la @BotFather)",
+      "required": true
+    },
+    "NODE_ENV": {
+      "description": "Environment (development/production)",
+      "value": "production"
+    }
+  }
+}

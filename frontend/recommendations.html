@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recomandări Prezențe - Săptămâni 8-14</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .recommendation-card {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 12px;
+            border-left: 6px solid #667eea;
+        }
+        .recommendation-card.complete {
+            border-left-color: #4CAF50;
+            background: #f0fff4;
+        }
+        .recommendation-card.warning {
+            border-left-color: #FF9800;
+            background: #fff9e6;
+        }
+        .recommendation-card.critical {
+            border-left-color: #F44336;
+            background: #ffebee;
+        }
+        .rec-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .rec-subject {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .rec-badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .badge-complete {
+            background: #4CAF50;
+            color: white;
+        }
+        .badge-warning {
+            background: #FF9800;
+            color: white;
+        }
+        .badge-critical {
+            background: #F44336;
+            color: white;
+        }
+        .rec-stats {
+            display: flex;
+            gap: 30px;
+            margin: 15px 0;
+            padding: 15px;
+            background: rgba(0,0,0,0.03);
+            border-radius: 8px;
+        }
+        .rec-stat {
+            flex: 1;
+            text-align: center;
+        }
+        .rec-stat-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        .rec-stat-label {
+            font-size: 13px;
+            color: #666;
+            margin-top: 5px;
+        }
+        .rec-message {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 16px;
+        }
+        .rec-classes {
+            margin-top: 15px;
+        }
+        .rec-class-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #555;
+        }
+        .class-list {
+            display: grid;
+            gap: 8px;
+        }
+        .class-item {
+            padding: 12px;
+            background: white;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .class-item-info {
+            display: flex;
+            gap: 15px;
+        }
+        .class-item-detail {
+            font-size: 13px;
+            color: #666;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            margin: -30px -30px 30px -30px;
+            border-radius: 12px 12px 0 0;
+        }
+        .hero-section h2 {
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+        .hero-section p {
+            font-size: 16px;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" style="max-width: 1400px;">
+        <header>
+            <h1>🎯 Recomandări Prezențe</h1>
+            <p style="opacity: 0.9; margin-top: 10px;">
+                Bazat pe prezențele tale din săptămânile 1-7
+            </p>
+        </header>
+
+        <div style="padding: 30px;">
+            <div class="hero-section">
+                <h2>📊 Situație Prezențe</h2>
+                <p id="weekInfo">Săptămâna curentă: 7 | Săptămâni rămase: 7</p>
+            </div>
+
+            <div id="recommendationsContainer">
+                <div class="loading">Se calculează recomandările...</div>
+            </div>
+
+            <div style="margin-top: 30px; text-align: center;">
+                <button class="btn btn-primary btn-large" onclick="window.location.href='/'">
+                    🏠 Înapoi la Dashboard
+                </button>
+                <button class="btn btn-secondary btn-large" onclick="window.location.href='/config.html'">
+                    ✏️ Editează Prezențe
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load recommendations
+        fetch('/api/recommendations')
+            .then(res => res.json())
+            .then(data => {
+                renderRecommendations(data);
+            })
+            .catch(err => {
+                console.error('Error loading recommendations:', err);
+                document.getElementById('recommendationsContainer').innerHTML =
+                    '<div class="empty-state"><h3>Eroare la încărcarea recomandărilor</h3></div>';
+            });
+
+        function renderRecommendations(data) {
+            const container = document.getElementById('recommendationsContainer');
+            let html = '';
+
+            for (const [name, rec] of Object.entries(data.recommendations)) {
+                let cardClass = 'recommendation-card';
+                let badgeClass = 'rec-badge';
+                let badgeText = '';
+                let message = '';
+
+                if (rec.status === 'complete') {
+                    cardClass += ' complete';
+                    badgeClass += ' badge-complete';
+                    badgeText = '✅ Complet';
+                    message = `🎉 <strong>Felicitări!</strong> Ai toate prezențele necesare la ${name}!`;
+                } else if (rec.status === 'warning') {
+                    cardClass += ' warning';
+                    badgeClass += ' badge-warning';
+                    badgeText = '⚠️ Aproape';
+                    message = `⚡ <strong>Atenție!</strong> Mai ai nevoie de ${rec.remaining} prezență${rec.remaining > 1 ? 'e' : ''} la ${name}. Recomandăm să mergi în următoarele săptămâni!`;
+                } else {
+                    cardClass += ' critical';
+                    badgeClass += ' badge-critical';
+                    badgeText = `❌ ${rec.remaining} rămase`;
+                    message = `🚨 <strong>Urgent!</strong> Mai trebuie să mergi de ${rec.remaining} ori la ${name} în următoarele ${rec.weeksRemaining} săptămâni!`;
+                }
+
+                const percentage = Math.round((rec.attended / rec.required) * 100);
+
+                html += `
+                    <div class="${cardClass}">
+                        <div class="rec-header">
+                            <div class="rec-subject">${name}</div>
+                            <div class="${badgeClass}">${badgeText}</div>
+                        </div>
+
+                        <div class="rec-stats">
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.attended}</div>
+                                <div class="rec-stat-label">Prezențe până acum</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.required}</div>
+                                <div class="rec-stat-label">Total necesar</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${rec.remaining}</div>
+                                <div class="rec-stat-label">Mai rămân</div>
+                            </div>
+                            <div class="rec-stat">
+                                <div class="rec-stat-value">${percentage}%</div>
+                                <div class="rec-stat-label">Progres</div>
+                            </div>
+                        </div>
+
+                        <div class="rec-message">${message}</div>
+
+                        <div class="rec-classes">
+                            <div class="rec-class-title">📅 Ore disponibile în săptămânile viitoare:</div>
+                            <div class="class-list">
+                `;
+
+                // Show available classes
+                rec.classes.slice(0, 5).forEach(cls => {
+                    html += `
+                        <div class="class-item">
+                            <div class="class-item-info">
+                                <span class="class-item-detail"><strong>📅</strong> ${cls.day}</span>
+                                <span class="class-item-detail"><strong>🕐</strong> ${cls.time_start} - ${cls.time_end}</span>
+                                <span class="class-item-detail"><strong>📍</strong> ${cls.room}</span>
+                                <span class="class-item-detail"><strong>🏷️</strong> ${cls.type}</span>
+                                ${cls.week_type ? `<span class="class-item-detail"><strong>📌</strong> ${cls.week_type}</span>` : ''}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,570 @@
+{
+  "metadata": {
+    "year": "II",
+    "semester": "I",
+    "academic_year": "2025-2026",
+    "start_date": "2025-09-29",
+    "current_week": 7,
+    "total_weeks": 14
+  },
+  "subjects": {
+    "ELECTRONICA": {
+      "name": "ELECTRONICA",
+      "acronym": "E",
+      "frequency": "weekly",
+      "required_count": 14,
+      "classes": [
+        {
+          "id": "E_C_LUNI_8",
+          "type": "C",
+          "day": "LUNI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "E_C_LUNI_18",
+          "type": "C",
+          "day": "LUNI",
+          "time_start": "18:00",
+          "time_end": "20:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "E_L_I15_LUNI_14",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "I-15",
+          "week_type": null
+        },
+        {
+          "id": "E_L_I15_MARTI_8",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "12:00",
+          "room": "I-15",
+          "week_type": null
+        },
+        {
+          "id": "E_L_I15_MIERCURI_9",
+          "type": "L",
+          "day": "MIERCURI",
+          "time_start": "09:00",
+          "time_end": "12:00",
+          "room": "I-15",
+          "week_type": null
+        },
+        {
+          "id": "E_L_I15_JOI_11",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "11:00",
+          "time_end": "17:00",
+          "room": "I-15",
+          "week_type": null
+        }
+      ]
+    },
+    "TS": {
+      "name": "TEORIA SISTEMELOR",
+      "acronym": "TS",
+      "frequency": "weekly",
+      "required_count": 14,
+      "classes": [
+        {
+          "id": "TS_C_LUNI_11",
+          "type": "C",
+          "day": "LUNI",
+          "time_start": "11:00",
+          "time_end": "12:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "TS_C_LUNI_16",
+          "type": "C",
+          "day": "LUNI",
+          "time_start": "16:00",
+          "time_end": "18:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "TS_L_E302_LUNI_8",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "08:00",
+          "time_end": "12:00",
+          "room": "E-302",
+          "week_type": null
+        },
+        {
+          "id": "TS_L_E302_MARTI_8",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "17:00",
+          "room": "E-302",
+          "week_type": null
+        },
+        {
+          "id": "TS_L_E302_MIERCURI_10",
+          "type": "L",
+          "day": "MIERCURI",
+          "time_start": "10:00",
+          "time_end": "19:00",
+          "room": "E-302",
+          "week_type": null
+        },
+        {
+          "id": "TS_L_E302_JOI_8",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "17:00",
+          "room": "E-302",
+          "week_type": null
+        }
+      ]
+    },
+    "ME": {
+      "name": "MATERIALE ELECTROTEHNICE",
+      "acronym": "ME",
+      "frequency": "weekly",
+      "required_count": 14,
+      "classes": [
+        {
+          "id": "ME_C_MIERCURI_12",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "12:00",
+          "time_end": "14:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "ME_C_MIERCURI_14",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "ME_L_E002_LUNI_14",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "19:00",
+          "room": "E-002",
+          "week_type": null
+        },
+        {
+          "id": "ME_L_E002_MARTI_8",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "18:00",
+          "room": "E-002",
+          "week_type": null
+        },
+        {
+          "id": "ME_L_E002_MIERCURI_8",
+          "type": "L",
+          "day": "MIERCURI",
+          "time_start": "08:00",
+          "time_end": "18:00",
+          "room": "E-002",
+          "week_type": null
+        },
+        {
+          "id": "ME_L_E002_JOI_8",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "18:00",
+          "room": "E-002",
+          "week_type": null
+        }
+      ]
+    },
+    "CF": {
+      "name": "CALITATE ȘI FIABILITATE",
+      "acronym": "CF",
+      "frequency": "biweekly",
+      "required_count": 7,
+      "classes": [
+        {
+          "id": "CF_C_MIERCURI_8_SI",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E2",
+          "week_type": "SI"
+        },
+        {
+          "id": "CF_C_MIERCURI_16_SP",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "16:00",
+          "time_end": "18:00",
+          "room": "E2",
+          "week_type": "SP"
+        },
+        {
+          "id": "CF_L_E402_MARTI_8_SI",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E402",
+          "week_type": "SI"
+        },
+        {
+          "id": "CF_L_E402_MARTI_8_SP",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E402",
+          "week_type": "SP"
+        },
+        {
+          "id": "CF_L_E402_MIERCURI_8_SI",
+          "type": "L",
+          "day": "MIERCURI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E402",
+          "week_type": "SI"
+        },
+        {
+          "id": "CF_L_E402_MIERCURI_8_SP",
+          "type": "L",
+          "day": "MIERCURI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E402",
+          "week_type": "SP"
+        },
+        {
+          "id": "CF_L_E402_JOI_8_SI",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E402",
+          "week_type": "SI"
+        },
+        {
+          "id": "CF_L_E402_JOI_8_SP",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E402",
+          "week_type": "SP"
+        }
+      ]
+    },
+    "MN": {
+      "name": "METODE NUMERICE",
+      "acronym": "MN",
+      "frequency": "biweekly",
+      "required_count": 7,
+      "classes": [
+        {
+          "id": "MN_C_VINERI_10",
+          "type": "C",
+          "day": "VINERI",
+          "time_start": "10:00",
+          "time_end": "14:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "MN_L_ETH103_LUNI_14_SI",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "ETH-103",
+          "week_type": "SI"
+        },
+        {
+          "id": "MN_L_ETH103_LUNI_14_SP",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "ETH-103",
+          "week_type": "SP"
+        },
+        {
+          "id": "MN_L_ETH103_JOI_8_SI",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "19:00",
+          "room": "ETH-103",
+          "week_type": "SI"
+        },
+        {
+          "id": "MN_L_ETH103_JOI_8_SP",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "19:00",
+          "room": "ETH-103",
+          "week_type": "SP"
+        }
+      ]
+    },
+    "TCE1": {
+      "name": "TEORIA CIRCUITELOR ELECTRICE 1",
+      "acronym": "TCE1",
+      "frequency": "biweekly",
+      "required_count": 7,
+      "classes": [
+        {
+          "id": "TCE1_C_VINERI_8",
+          "type": "C",
+          "day": "VINERI",
+          "time_start": "08:00",
+          "time_end": "16:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "TCE1_S_E410_LUNI_12_SI",
+          "type": "S",
+          "day": "LUNI",
+          "time_start": "12:00",
+          "time_end": "14:00",
+          "room": "E410",
+          "week_type": "SI"
+        },
+        {
+          "id": "TCE1_S_E410_LUNI_12_SP",
+          "type": "S",
+          "day": "LUNI",
+          "time_start": "12:00",
+          "time_end": "14:00",
+          "room": "E410",
+          "week_type": "SP"
+        },
+        {
+          "id": "TCE1_S_E102_MARTI_8_SI",
+          "type": "S",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E102",
+          "week_type": "SI"
+        },
+        {
+          "id": "TCE1_S_E407_MARTI_8_SP",
+          "type": "S",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "10:00",
+          "room": "E407",
+          "week_type": "SP"
+        },
+        {
+          "id": "TCE1_L_E102_MARTI_10_SI",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "10:00",
+          "time_end": "12:00",
+          "room": "E-102",
+          "week_type": "SI"
+        },
+        {
+          "id": "TCE1_L_E102_MARTI_10_SP",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "10:00",
+          "time_end": "12:00",
+          "room": "E-102",
+          "week_type": "SP"
+        },
+        {
+          "id": "TCE1_L_E102_JOI_8_SI",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "20:00",
+          "room": "E-102",
+          "week_type": "SI"
+        },
+        {
+          "id": "TCE1_L_E102_JOI_8_SP",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "20:00",
+          "room": "E-102",
+          "week_type": "SP"
+        }
+      ]
+    },
+    "TW": {
+      "name": "TEHNOLOGII WEB",
+      "acronym": "TW",
+      "frequency": "biweekly",
+      "required_count": 7,
+      "classes": [
+        {
+          "id": "TW_C_MIERCURI_10",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "10:00",
+          "time_end": "12:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "TW_C_JOI_14",
+          "type": "C",
+          "day": "JOI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "E2",
+          "week_type": null
+        },
+        {
+          "id": "TW_L_E312_LUNI_14_SI",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "E-312",
+          "week_type": "SI"
+        },
+        {
+          "id": "TW_L_E312_LUNI_14_SP",
+          "type": "L",
+          "day": "LUNI",
+          "time_start": "14:00",
+          "time_end": "16:00",
+          "room": "E-312",
+          "week_type": "SP"
+        },
+        {
+          "id": "TW_L_E312_MARTI_8_SI",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E-312",
+          "week_type": "SI"
+        },
+        {
+          "id": "TW_L_E312_MARTI_8_SP",
+          "type": "L",
+          "day": "MARTI",
+          "time_start": "08:00",
+          "time_end": "14:00",
+          "room": "E-312",
+          "week_type": "SP"
+        },
+        {
+          "id": "TW_L_E312_JOI_8_SI",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "13:00",
+          "room": "E-312",
+          "week_type": "SI"
+        },
+        {
+          "id": "TW_L_E312_JOI_8_SP",
+          "type": "L",
+          "day": "JOI",
+          "time_start": "08:00",
+          "time_end": "13:00",
+          "room": "E-312",
+          "week_type": "SP"
+        }
+      ]
+    },
+    "MS": {
+      "name": "MATEMATICI SPECIALE",
+      "acronym": "MS",
+      "frequency": "weekly",
+      "required_count": 14,
+      "classes": [
+        {
+          "id": "MS_C_MIERCURI_18_SP",
+          "type": "C",
+          "day": "MIERCURI",
+          "time_start": "18:00",
+          "time_end": "20:00",
+          "room": "E2",
+          "week_type": "SP"
+        },
+        {
+          "id": "MS_S_MIERCURI_18_SI",
+          "type": "S",
+          "day": "MIERCURI",
+          "time_start": "18:00",
+          "time_end": "20:00",
+          "room": "E2",
+          "week_type": "SI"
+        },
+        {
+          "id": "MS_S_JOI_18_SP",
+          "type": "S",
+          "day": "JOI",
+          "time_start": "18:00",
+          "time_end": "20:00",
+          "room": "E2",
+          "week_type": "SP"
+        }
+      ]
+    },
+    "PEDAGOGIE": {
+      "name": "PEDAGOGIE II",
+      "acronym": "PED",
+      "frequency": "optional",
+      "required_count": 0,
+      "classes": [
+        {
+          "id": "PED_C_VINERI_12",
+          "type": "C",
+          "day": "VINERI",
+          "time_start": "12:00",
+          "time_end": "14:00",
+          "room": "CH-7",
+          "week_type": null
+        },
+        {
+          "id": "PED_S_MARTI_12",
+          "type": "S",
+          "day": "MARTI",
+          "time_start": "12:00",
+          "time_end": "17:00",
+          "room": "CH-463",
+          "week_type": null
+        },
+        {
+          "id": "PED_S_MIERCURI_12",
+          "type": "S",
+          "day": "MIERCURI",
+          "time_start": "12:00",
+          "time_end": "17:00",
+          "room": "CH-463",
+          "week_type": null
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Creare Orar Personal</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .subject-section {
+            background: white;
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+        .subject-header {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        .add-class-btn {
+            padding: 10px 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-class-btn:hover {
+            background: #45a049;
+        }
+        .class-entry {
+            background: #f9f9f9;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+        }
+        .class-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        .form-group label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .form-group input,
+        .form-group select {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .remove-class-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #F44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .remove-class-btn:hover {
+            background: #d32f2f;
+        }
+        .save-section {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            z-index: 1000;
+        }
+        .frequency-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+        .weekly {
+            background: #4CAF50;
+            color: white;
+        }
+        .biweekly {
+            background: #FF9800;
+            color: white;
+        }
+    </style>
+</head>
+<body style="padding-bottom: 100px;">
+    <div class="container" style="max-width: 1400px;">
+        <header>
+            <h1>📅 Creare Orar Personal</h1>
+            <p style="opacity: 0.9; margin-top: 10px;">
+                Adaugă manual DOAR orele tale din orar
+            </p>
+        </header>
+
+        <div style="padding: 30px;">
+            <div class="info-text">
+                💡 <strong>Sfat:</strong> Adaugă doar orele la care POȚI merge (grupa ta, orele la care te duci de obicei).
+                Poți adăuga aceeași materie de mai multe ori dacă ai opțiuni diferite (ex: Marți și Joi).
+            </div>
+
+            <!-- ELECTRONICA -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    📘 ELECTRONICA (E)
+                    <span class="frequency-badge weekly">Săptămânal</span>
+                </div>
+                <div id="E-classes"></div>
+                <button class="add-class-btn" onclick="addClass('E', 'weekly')">
+                    ➕ Adaugă Oră ELECTRONICA
+                </button>
+            </div>
+
+            <!-- TS -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    📗 TEORIA SISTEMELOR (TS)
+                    <span class="frequency-badge weekly">Săptămânal</span>
+                </div>
+                <div id="TS-classes"></div>
+                <button class="add-class-btn" onclick="addClass('TS', 'weekly')">
+                    ➕ Adaugă Oră TS
+                </button>
+            </div>
+
+            <!-- ME -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    📙 MATERIALE ELECTROTEHNICE (ME)
+                    <span class="frequency-badge weekly">Săptămânal</span>
+                </div>
+                <div id="ME-classes"></div>
+                <button class="add-class-btn" onclick="addClass('ME', 'weekly')">
+                    ➕ Adaugă Oră ME
+                </button>
+            </div>
+
+            <!-- CF -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    📕 CALITATE ȘI FIABILITATE (CF)
+                    <span class="frequency-badge biweekly">O dată la 2 săptămâni</span>
+                </div>
+                <div id="CF-classes"></div>
+                <button class="add-class-btn" onclick="addClass('CF', 'biweekly')">
+                    ➕ Adaugă Oră CF
+                </button>
+            </div>
+
+            <!-- MN -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    📐 METODE NUMERICE (MN)
+                    <span class="frequency-badge biweekly">O dată la 2 săptămâni</span>
+                </div>
+                <div id="MN-classes"></div>
+                <button class="add-class-btn" onclick="addClass('MN', 'biweekly')">
+                    ➕ Adaugă Oră MN
+                </button>
+            </div>
+
+            <!-- TCE1 -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    ⚡ TEORIA CIRCUITELOR ELECTRICE 1 (TCE1)
+                    <span class="frequency-badge biweekly">O dată la 2 săptămâni</span>
+                </div>
+                <div id="TCE1-classes"></div>
+                <button class="add-class-btn" onclick="addClass('TCE1', 'biweekly')">
+                    ➕ Adaugă Oră TCE1
+                </button>
+            </div>
+
+            <!-- TW -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    💻 TEHNOLOGII WEB (TW)
+                    <span class="frequency-badge biweekly">O dată la 2 săptămâni</span>
+                </div>
+                <div id="TW-classes"></div>
+                <button class="add-class-btn" onclick="addClass('TW', 'biweekly')">
+                    ➕ Adaugă Oră TW
+                </button>
+            </div>
+
+            <!-- MS -->
+            <div class="subject-section">
+                <div class="subject-header">
+                    🔢 MATEMATICI SPECIALE (MS)
+                    <span class="frequency-badge weekly">Săptămânal</span>
+                </div>
+                <div id="MS-classes"></div>
+                <button class="add-class-btn" onclick="addClass('MS', 'weekly')">
+                    ➕ Adaugă Oră MS
+                </button>
+            </div>
+
+            <!-- CUSTOM CLASSES -->
+            <div class="subject-section" style="border-left-color: #FF6B6B;">
+                <div class="subject-header" style="color: #FF6B6B;">
+                    ⭐ ORE CUSTOM / ALTE ORE
+                    <span class="frequency-badge" style="background: #FF6B6B;">La alegere</span>
+                </div>
+                <div style="margin-bottom: 15px; color: #666; font-size: 14px;">
+                    💡 Adaugă orice alt curs/activitate din orar pe care l-ai uitat sau care nu e în lista de mai sus
+                </div>
+                <div id="CUSTOM-classes"></div>
+                <button class="add-class-btn" style="background: #FF6B6B;" onclick="addCustomClass()">
+                    ➕ Adaugă Oră Custom
+                </button>
+            </div>
+        </div>
+
+        <div class="save-section">
+            <button class="btn btn-secondary btn-large" onclick="previewSchedule()">
+                👁️ Previzualizează Orar
+            </button>
+            <button class="btn btn-primary btn-large" onclick="saveSchedule()">
+                💾 Salvează și Mergi la Prezențe
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let schedule = {};
+        let classCounter = 0;
+        let customCounter = 0;
+        let customSubjects = {}; // Store custom subject definitions
+
+        function addCustomClass() {
+            const container = document.getElementById('CUSTOM-classes');
+            const classId = `CUSTOM_${customCounter++}`;
+
+            const classEntry = document.createElement('div');
+            classEntry.className = 'class-entry';
+            classEntry.dataset.classId = classId;
+            classEntry.style.border = '2px solid #FF6B6B';
+
+            classEntry.innerHTML = `
+                <button class="remove-class-btn" onclick="removeClass('${classId}')">
+                    🗑️ Șterge
+                </button>
+                <div class="class-form">
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label>Nume Oră (obligatoriu) *</label>
+                        <input type="text" data-field="custom_name" placeholder="Ex: Cultura Organizațională, Sport, etc." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Cod/Acronim (opțional)</label>
+                        <input type="text" data-field="custom_acronym" placeholder="Ex: CO, SPORT" maxlength="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Frecvență</label>
+                        <select data-field="custom_frequency" onchange="toggleCustomWeekType('${classId}', this.value)">
+                            <option value="weekly">Săptămânal</option>
+                            <option value="biweekly">La 2 săptămâni</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ziua</label>
+                        <select data-field="day">
+                            <option value="LUNI">Luni</option>
+                            <option value="MARTI">Marți</option>
+                            <option value="MIERCURI">Miercuri</option>
+                            <option value="JOI">Joi</option>
+                            <option value="VINERI">Vineri</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ora Start</label>
+                        <input type="time" data-field="time_start" value="08:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Ora Sfârșit</label>
+                        <input type="time" data-field="time_end" value="10:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Sala</label>
+                        <input type="text" data-field="room" placeholder="Ex: E-302">
+                    </div>
+                    <div class="form-group">
+                        <label>Tip</label>
+                        <select data-field="type">
+                            <option value="C">Curs</option>
+                            <option value="L">Laborator</option>
+                            <option value="S">Seminar</option>
+                            <option value="P">Proiect</option>
+                            <option value="A">Altele</option>
+                        </select>
+                    </div>
+                    <div class="form-group" data-week-type-container style="display: none;">
+                        <label>Semigrupă</label>
+                        <select data-field="week_type">
+                            <option value="">Ambele</option>
+                            <option value="SI">SI (Impară)</option>
+                            <option value="SP">SP (Pară)</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(classEntry);
+        }
+
+        function toggleCustomWeekType(classId, frequency) {
+            const entry = document.querySelector(`[data-class-id="${classId}"]`);
+            const weekTypeContainer = entry.querySelector('[data-week-type-container]');
+
+            if (frequency === 'biweekly') {
+                weekTypeContainer.style.display = 'flex';
+            } else {
+                weekTypeContainer.style.display = 'none';
+            }
+        }
+
+        function addClass(subject, frequency) {
+            const container = document.getElementById(`${subject}-classes`);
+            const classId = `${subject}_${classCounter++}`;
+
+            const classEntry = document.createElement('div');
+            classEntry.className = 'class-entry';
+            classEntry.dataset.classId = classId;
+
+            classEntry.innerHTML = `
+                <button class="remove-class-btn" onclick="removeClass('${classId}')">
+                    🗑️ Șterge
+                </button>
+                <div class="class-form">
+                    <div class="form-group">
+                        <label>Ziua</label>
+                        <select data-field="day">
+                            <option value="LUNI">Luni</option>
+                            <option value="MARTI">Marți</option>
+                            <option value="MIERCURI">Miercuri</option>
+                            <option value="JOI">Joi</option>
+                            <option value="VINERI">Vineri</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ora Start</label>
+                        <input type="time" data-field="time_start" value="08:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Ora Sfârșit</label>
+                        <input type="time" data-field="time_end" value="10:00">
+                    </div>
+                    <div class="form-group">
+                        <label>Sala</label>
+                        <input type="text" data-field="room" placeholder="Ex: E-302">
+                    </div>
+                    <div class="form-group">
+                        <label>Tip</label>
+                        <select data-field="type">
+                            <option value="C">Curs</option>
+                            <option value="L">Laborator</option>
+                            <option value="S">Seminar</option>
+                        </select>
+                    </div>
+                    ${frequency === 'biweekly' ? `
+                    <div class="form-group">
+                        <label>Semigrupă</label>
+                        <select data-field="week_type">
+                            <option value="">Ambele</option>
+                            <option value="SI">SI (Impară)</option>
+                            <option value="SP">SP (Pară)</option>
+                        </select>
+                    </div>
+                    ` : ''}
+                </div>
+            `;
+
+            container.appendChild(classEntry);
+        }
+
+        function removeClass(classId) {
+            const element = document.querySelector(`[data-class-id="${classId}"]`);
+            if (element) element.remove();
+        }
+
+        function collectSchedule() {
+            const subjects = ['E', 'TS', 'ME', 'CF', 'MN', 'TCE1', 'TW', 'MS'];
+            const collected = {};
+
+            // Collect predefined subjects
+            subjects.forEach(subject => {
+                const container = document.getElementById(`${subject}-classes`);
+                const entries = container.querySelectorAll('.class-entry');
+
+                collected[subject] = {
+                    name: getSubjectName(subject),
+                    acronym: subject,
+                    frequency: getFrequency(subject),
+                    classes: []
+                };
+
+                entries.forEach((entry, idx) => {
+                    const day = entry.querySelector('[data-field="day"]').value;
+                    const timeStart = entry.querySelector('[data-field="time_start"]').value;
+                    const timeEnd = entry.querySelector('[data-field="time_end"]').value;
+                    const room = entry.querySelector('[data-field="room"]').value;
+                    const type = entry.querySelector('[data-field="type"]').value;
+                    const weekTypeEl = entry.querySelector('[data-field="week_type"]');
+                    const weekType = weekTypeEl ? weekTypeEl.value : null;
+
+                    collected[subject].classes.push({
+                        id: `${subject}_${day}_${timeStart}_${idx}`,
+                        day,
+                        time_start: timeStart,
+                        time_end: timeEnd,
+                        room,
+                        type,
+                        week_type: weekType || null
+                    });
+                });
+            });
+
+            // Collect custom classes
+            const customContainer = document.getElementById('CUSTOM-classes');
+            const customEntries = customContainer.querySelectorAll('.class-entry');
+
+            customEntries.forEach((entry, idx) => {
+                const customName = entry.querySelector('[data-field="custom_name"]').value.trim();
+                if (!customName) {
+                    alert('⚠️ Trebuie să completezi numele pentru toate orele custom!');
+                    return;
+                }
+
+                let customAcronym = entry.querySelector('[data-field="custom_acronym"]').value.trim();
+                if (!customAcronym) {
+                    // Generate acronym from name (first letters of words)
+                    customAcronym = customName
+                        .split(' ')
+                        .map(word => word[0])
+                        .join('')
+                        .toUpperCase()
+                        .substring(0, 10);
+                }
+
+                const frequency = entry.querySelector('[data-field="custom_frequency"]').value;
+                const day = entry.querySelector('[data-field="day"]').value;
+                const timeStart = entry.querySelector('[data-field="time_start"]').value;
+                const timeEnd = entry.querySelector('[data-field="time_end"]').value;
+                const room = entry.querySelector('[data-field="room"]').value;
+                const type = entry.querySelector('[data-field="type"]').value;
+                const weekTypeEl = entry.querySelector('[data-field="week_type"]');
+                const weekType = weekTypeEl ? weekTypeEl.value : null;
+
+                // Create unique key for custom subject
+                const customKey = `CUSTOM_${customAcronym}_${idx}`;
+
+                collected[customKey] = {
+                    name: customName,
+                    acronym: customAcronym,
+                    frequency: frequency,
+                    isCustom: true,
+                    classes: [{
+                        id: `${customKey}_${day}_${timeStart}`,
+                        day,
+                        time_start: timeStart,
+                        time_end: timeEnd,
+                        room,
+                        type,
+                        week_type: weekType || null
+                    }]
+                };
+            });
+
+            return collected;
+        }
+
+        function getSubjectName(acronym) {
+            const names = {
+                'E': 'ELECTRONICA',
+                'TS': 'TEORIA SISTEMELOR',
+                'ME': 'MATERIALE ELECTROTEHNICE',
+                'CF': 'CALITATE ȘI FIABILITATE',
+                'MN': 'METODE NUMERICE',
+                'TCE1': 'TEORIA CIRCUITELOR ELECTRICE 1',
+                'TW': 'TEHNOLOGII WEB',
+                'MS': 'MATEMATICI SPECIALE'
+            };
+            return names[acronym];
+        }
+
+        function getFrequency(acronym) {
+            const weekly = ['E', 'TS', 'ME', 'MS'];
+            return weekly.includes(acronym) ? 'weekly' : 'biweekly';
+        }
+
+        function previewSchedule() {
+            const schedule = collectSchedule();
+            let preview = 'ORARUL TĂU:\n\n';
+
+            Object.entries(schedule).forEach(([key, subject]) => {
+                if (subject.classes.length > 0) {
+                    preview += `${subject.name}:\n`;
+                    subject.classes.forEach(cls => {
+                        preview += `  - ${cls.day} ${cls.time_start}-${cls.time_end} (${cls.type}) ${cls.room}`;
+                        if (cls.week_type) preview += ` [${cls.week_type}]`;
+                        preview += '\n';
+                    });
+                    preview += '\n';
+                }
+            });
+
+            alert(preview);
+        }
+
+        async function saveSchedule() {
+            const schedule = collectSchedule();
+
+            // Validate
+            let totalClasses = 0;
+            Object.values(schedule).forEach(subject => {
+                totalClasses += subject.classes.length;
+            });
+
+            if (totalClasses === 0) {
+                alert('❌ Nu ai adăugat nicio oră! Adaugă cel puțin o oră.');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/schedule/personal', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(schedule)
+                });
+
+                if (response.ok) {
+                    alert('✅ Orar salvat cu succes!');
+                    const urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.get('edit') === 'true') {
+                        window.location.href = '/dashboard.html';
+                    } else {
+                        window.location.href = '/attendance-grid.html';
+                    }
+                } else {
+                    alert('❌ Eroare la salvare. Încearcă din nou.');
+                }
+            } catch (err) {
+                console.error('Error:', err);
+                alert('❌ Eroare la salvare. Încearcă din nou.');
+            }
+        }
+
+        // Load existing schedule if in edit mode
+        async function loadExistingSchedule() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('edit') !== 'true') {
+                return; // Not in edit mode
+            }
+
+            try {
+                const response = await fetch('/api/schedule/personal');
+                if (!response.ok) {
+                    console.log('No existing schedule found');
+                    return;
+                }
+
+                const schedule = await response.json();
+                console.log('Loading existing schedule:', schedule);
+
+                // Populate the form with existing data
+                Object.entries(schedule).forEach(([key, subject]) => {
+                    if (!subject.classes || subject.classes.length === 0) return;
+
+                    subject.classes.forEach((cls, idx) => {
+                        // Check if this is a custom class or predefined
+                        if (subject.isCustom) {
+                            // Add custom class
+                            addCustomClass();
+                            const customContainer = document.getElementById('CUSTOM-classes');
+                            const entries = customContainer.querySelectorAll('.class-entry');
+                            const lastEntry = entries[entries.length - 1];
+
+                            // Populate custom class fields
+                            lastEntry.querySelector('[data-field="custom_name"]').value = subject.name;
+                            lastEntry.querySelector('[data-field="custom_acronym"]').value = subject.acronym || '';
+                            lastEntry.querySelector('[data-field="custom_frequency"]').value = subject.frequency;
+                            lastEntry.querySelector('[data-field="day"]').value = cls.day;
+                            lastEntry.querySelector('[data-field="time_start"]').value = cls.time_start;
+                            lastEntry.querySelector('[data-field="time_end"]').value = cls.time_end;
+                            lastEntry.querySelector('[data-field="room"]').value = cls.room || '';
+                            lastEntry.querySelector('[data-field="type"]').value = cls.type;
+
+                            // Trigger frequency change to show/hide week_type
+                            const classId = lastEntry.dataset.classId;
+                            toggleCustomWeekType(classId, subject.frequency);
+
+                            if (cls.week_type) {
+                                lastEntry.querySelector('[data-field="week_type"]').value = cls.week_type;
+                            }
+                        } else {
+                            // Add predefined class
+                            if (['E', 'TS', 'ME', 'CF', 'MN', 'TCE1', 'TW', 'MS'].includes(key)) {
+                                addClass(key, subject.frequency);
+
+                                const container = document.getElementById(`${key}-classes`);
+                                const entries = container.querySelectorAll('.class-entry');
+                                const lastEntry = entries[entries.length - 1];
+
+                                // Populate fields
+                                lastEntry.querySelector('[data-field="day"]').value = cls.day;
+                                lastEntry.querySelector('[data-field="time_start"]').value = cls.time_start;
+                                lastEntry.querySelector('[data-field="time_end"]').value = cls.time_end;
+                                lastEntry.querySelector('[data-field="room"]').value = cls.room || '';
+                                lastEntry.querySelector('[data-field="type"]').value = cls.type;
+
+                                if (cls.week_type && lastEntry.querySelector('[data-field="week_type"]')) {
+                                    lastEntry.querySelector('[data-field="week_type"]').value = cls.week_type;
+                                }
+                            }
+                        }
+                    });
+                });
+
+                // Update header to show editing mode
+                const header = document.querySelector('header h1');
+                if (header) {
+                    header.innerHTML = '✏️ Editează Orar Personal';
+                }
+
+                alert('✅ Orar încărcat! Poți face modificările dorite.');
+            } catch (err) {
+                console.error('Error loading schedule:', err);
+            }
+        }
+
+        // Load existing schedule when page loads
+        window.addEventListener('DOMContentLoaded', loadExistingSchedule);
+    </script>
+</body>
+</html>
