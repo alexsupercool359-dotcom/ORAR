@@ -1,0 +1,13 @@
+services:
+  # Web service - Dashboard + API
+  - type: web
+    name: orar-dashboard
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: TELEGRAM_TOKEN
+        sync: false  # Vei seta manual în Render Dashboard
