@@ -423,6 +423,7 @@ bot.onText(/\/ajutor/, (msg) => {
 🔔 NOTIFICĂRI AUTOMATE:
 Primești notificări cu 1h înainte de TOATE orele din orar.
 Mesajele arată clar prioritatea (OBLIGATORIU/Opțional).
+Poți amâna notificările cu 15 sau 30 de minute direct din Telegram!
 
 📊 DASHBOARD WEB:
 http://localhost:3000
@@ -437,6 +438,79 @@ http://localhost:3000
     `;
 
     bot.sendMessage(chatId, text);
+});
+
+// Handle callback queries from inline keyboard buttons
+bot.on('callback_query', (callbackQuery) => {
+    const msg = callbackQuery.message;
+    const chatId = msg.chat.id;
+    const messageId = msg.message_id;
+    const data = callbackQuery.data;
+    const userId = callbackQuery.from.id;
+
+    try {
+        // Parse callback data
+        const parts = data.split('_');
+        const action = parts[0]; // 'snooze' or 'dismiss'
+
+        if (action === 'snooze') {
+            const minutes = parseInt(parts[1]);
+            const notificationKey = parts.slice(2).join('_'); // reconstruct the key
+            const userNotificationKey = `${userId}_${notificationKey}`;
+
+            // Set snooze time
+            const snoozeUntil = new Date();
+            snoozeUntil.setMinutes(snoozeUntil.getMinutes() + minutes);
+
+            // Store snooze info with message text for resending
+            snoozedNotifications.set(userNotificationKey, {
+                snoozeUntil,
+                messageText: msg.text,
+                notificationKey,
+                userId
+            });
+
+            // Update message to show it's snoozed
+            bot.editMessageText(
+                `${msg.text}\n\n⏰ AMÂNAT ${minutes} minute. Vei primi un reminder la ${snoozeUntil.toLocaleTimeString('ro-RO', { hour: '2-digit', minute: '2-digit' })}.`,
+                {
+                    chat_id: chatId,
+                    message_id: messageId
+                }
+            );
+
+            // Send confirmation
+            bot.answerCallbackQuery(callbackQuery.id, {
+                text: `✅ Notificare amânată ${minutes} minute`,
+                show_alert: false
+            });
+
+            console.log(`⏰ User ${userId} snoozed notification for ${notificationKey} by ${minutes} minutes`);
+
+        } else if (action === 'dismiss') {
+            // Just acknowledge and remove buttons
+            bot.editMessageReplyMarkup(
+                { inline_keyboard: [] },
+                {
+                    chat_id: chatId,
+                    message_id: messageId
+                }
+            );
+
+            bot.answerCallbackQuery(callbackQuery.id, {
+                text: '✅ Notificare confirmată',
+                show_alert: false
+            });
+
+            console.log(`✅ User ${userId} dismissed notification`);
+        }
+    } catch (err) {
+        console.error('Error handling callback query:', err);
+        bot.answerCallbackQuery(callbackQuery.id, {
+            text: '❌ Eroare la procesarea acțiunii',
+            show_alert: false
+        });
+    }
 });
 
 // Helper: Get current week number
@@ -464,12 +538,53 @@ function getDayName(date) {
     return dayNames[dayIndex] || '';
 }
 
+// Store snoozed notifications with full data for resending
+const snoozedNotifications = new Map(); // key: userId_subjectName_time, value: { snoozeUntil, subject, class, rec, userId }
+
+// Check and resend snoozed notifications
+function checkSnoozedNotifications() {
+    cron.schedule('* * * * *', () => { // Check every minute
+        const now = new Date();
+
+        snoozedNotifications.forEach((snoozeData, userNotificationKey) => {
+            // If snooze time has expired, resend the notification
+            if (now >= snoozeData.snoozeUntil) {
+                const { messageText, notificationKey, userId } = snoozeData;
+
+                // Create inline keyboard with snooze options again
+                const keyboard = {
+                    inline_keyboard: [
+                        [
+                            { text: '⏰ Amână 10 min', callback_data: `snooze_10_${notificationKey}` },
+                            { text: '⏰ Amână 15 min', callback_data: `snooze_15_${notificationKey}` }
+                        ],
+                        [
+                            { text: '✅ OK, am văzut', callback_data: `dismiss_${notificationKey}` }
+                        ]
+                    ]
+                };
+
+                // Resend the notification
+                bot.sendMessage(userId, `🔔 REMINDER:\n\n${messageText}`, {
+                    reply_markup: keyboard
+                }).catch(err => {
+                    console.error(`Error resending snoozed notification to ${userId}:`, err.message);
+                });
+
+                // Remove from snoozed notifications
+                snoozedNotifications.delete(userNotificationKey);
+                console.log(`🔔 Resent snoozed notification to user ${userId}`);
+            }
+        });
+    });
+}
+
 // Notification system
 function startNotifications() {
     console.log('🔔 Notification system started');
 
-    // Run every hour at minute 0
-    cron.schedule('0 * * * *', () => {
+    // Run every 15 minutes to catch all classes properly
+    cron.schedule('*/15 * * * *', () => {
         try {
             const now = new Date();
             const { schedule } = loadData();
@@ -497,23 +612,42 @@ function startNotifications() {
                     const classTime = new Date();
                     classTime.setHours(hour, minute, 0);
 
-                    // Check if 1 hour before
+                    // Check if approximately 1 hour before (50-70 minutes to catch with 15-min intervals)
                     const timeDiff = classTime - now;
-                    const hoursDiff = timeDiff / (1000 * 60 * 60);
+                    const minutesDiff = timeDiff / (1000 * 60);
 
-                    if (hoursDiff >= 0.9 && hoursDiff <= 1.1) {
-                        // Determine if obligatory (but send for ALL classes)
-                        const isObligatory = rec && rec.remaining > 0;
-                        const urgency = rec && rec.status === 'needed' ? '🚨 CRITIC' : rec && rec.status === 'warning' ? '⚠️ URGENT' : '✅';
+                    // Check for snoozed state
+                    const notificationKey = `${subject.name}_${cls.time_start}`;
 
-                        let priorityLabel = 'Opțional';
-                        if (rec && rec.remaining > 0) {
-                            if (rec.status === 'needed') priorityLabel = 'OBLIGATORIU - CRITIC';
-                            else if (rec.status === 'warning') priorityLabel = 'OBLIGATORIU - URGENT';
-                            else priorityLabel = 'OBLIGATORIU';
-                        }
+                    if (minutesDiff >= 50 && minutesDiff <= 70) {
+                        // Send to all users (FOR ALL HOURS, not just obligatory)
+                        userIds.forEach(userId => {
+                            // Check if this notification is snoozed for this user
+                            const userNotificationKey = `${userId}_${notificationKey}`;
+                            const snoozeData = snoozedNotifications.get(userNotificationKey);
 
-                        const message = `
+                            if (snoozeData && now < snoozeData.snoozeUntil) {
+                                // Skip this notification, it's still snoozed
+                                return;
+                            }
+
+                            // Clear any old snooze state
+                            if (snoozeData) {
+                                snoozedNotifications.delete(userNotificationKey);
+                            }
+
+                            // Determine if obligatory (but send for ALL classes)
+                            const isObligatory = rec && rec.remaining > 0;
+                            const urgency = rec && rec.status === 'needed' ? '🚨 CRITIC' : rec && rec.status === 'warning' ? '⚠️ URGENT' : '✅';
+
+                            let priorityLabel = 'Opțional';
+                            if (rec && rec.remaining > 0) {
+                                if (rec.status === 'needed') priorityLabel = 'OBLIGATORIU - CRITIC';
+                                else if (rec.status === 'warning') priorityLabel = 'OBLIGATORIU - URGENT';
+                                else priorityLabel = 'OBLIGATORIU';
+                            }
+
+                            const message = `
 ${urgency} ${priorityLabel}
 
 📖 ${subject.name}
@@ -523,16 +657,29 @@ ${urgency} ${priorityLabel}
 ${rec ? `Status: ${rec.attended}/${rec.required} | Rămân: ${rec.remaining}` : 'Oră din orarul tău'}
 
 Dashboard: http://localhost:3000
-                        `;
+                            `;
 
-                        // Send to all users (FOR ALL HOURS, not just obligatory)
-                        userIds.forEach(userId => {
-                            bot.sendMessage(userId, message.trim()).catch(err => {
+                            // Create inline keyboard with snooze options
+                            const keyboard = {
+                                inline_keyboard: [
+                                    [
+                                        { text: '⏰ Amână 15 min', callback_data: `snooze_15_${notificationKey}` },
+                                        { text: '⏰ Amână 30 min', callback_data: `snooze_30_${notificationKey}` }
+                                    ],
+                                    [
+                                        { text: '✅ OK, am văzut', callback_data: `dismiss_${notificationKey}` }
+                                    ]
+                                ]
+                            };
+
+                            bot.sendMessage(userId, message.trim(), {
+                                reply_markup: keyboard
+                            }).catch(err => {
                                 console.error(`Error sending to ${userId}:`, err.message);
                             });
                         });
 
-                        console.log(`📬 Sent notification for ${subject.name} at ${cls.time_start} (${priorityLabel})`);
+                        console.log(`📬 Sent notification for ${subject.name} at ${cls.time_start} (with snooze buttons)`);
                     }
                 });
             });
@@ -543,6 +690,9 @@ Dashboard: http://localhost:3000
 }
 
 // Start notifications after 2 seconds
-setTimeout(startNotifications, 2000);
+setTimeout(() => {
+    startNotifications();
+    checkSnoozedNotifications();
+}, 2000);
 
 module.exports = { bot, startNotifications };
