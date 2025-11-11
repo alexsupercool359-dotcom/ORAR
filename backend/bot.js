@@ -579,6 +579,20 @@ function checkSnoozedNotifications() {
     });
 }
 
+// Helper function to get Romania time
+function getRomaniaTime() {
+    // Romania is in EET/EEST timezone (UTC+2/+3)
+    return new Date(new Date().toLocaleString('en-US', { timeZone: 'Europe/Bucharest' }));
+}
+
+// Helper function to create a Date object for a specific time today in Romania timezone
+function createRomaniaTimeToday(hour, minute) {
+    const now = getRomaniaTime();
+    const date = new Date(now);
+    date.setHours(hour, minute, 0, 0);
+    return date;
+}
+
 // Notification system
 function startNotifications() {
     console.log('🔔 Notification system started');
@@ -586,7 +600,7 @@ function startNotifications() {
     // Run every 15 minutes to catch all classes properly
     cron.schedule('*/15 * * * *', () => {
         try {
-            const now = new Date();
+            const now = getRomaniaTime();
             const { schedule } = loadData();
             const recommendations = getRecommendations();
 
@@ -607,10 +621,9 @@ function startNotifications() {
                     // Check if available this week
                     if (cls.week_type && cls.week_type !== weekType) return;
 
-                    // Parse time
+                    // Parse time and create date in Romania timezone
                     const [hour, minute] = cls.time_start.split(':').map(Number);
-                    const classTime = new Date();
-                    classTime.setHours(hour, minute, 0);
+                    const classTime = createRomaniaTimeToday(hour, minute);
 
                     // Check if approximately 1 hour before (50-70 minutes to catch with 15-min intervals)
                     const timeDiff = classTime - now;
@@ -689,10 +702,81 @@ Dashboard: http://localhost:3000
     });
 }
 
+// Auto-mark attendance after class ends
+function startAutoAttendance() {
+    console.log('✅ Auto-attendance system started');
+
+    // Run every 15 minutes to check for classes that just ended
+    cron.schedule('*/15 * * * *', () => {
+        try {
+            const now = getRomaniaTime();
+            const { schedule, attendance } = loadData();
+
+            if (!schedule) return;
+
+            const today = getDayName(now);
+            const currentWeek = getCurrentWeekNumber();
+            const weekType = currentWeek % 2 === 1 ? 'SI' : 'SP';
+
+            // Check each class
+            Object.entries(schedule).forEach(([key, subject]) => {
+                subject.classes.forEach(cls => {
+                    // Only check classes today
+                    if (cls.day !== today) return;
+
+                    // Check if available this week
+                    if (cls.week_type && cls.week_type !== weekType) return;
+
+                    // Parse end time
+                    const [endHour, endMinute] = cls.time_end.split(':').map(Number);
+                    const classEndTime = createRomaniaTimeToday(endHour, endMinute);
+
+                    // Check if class ended in the last 15 minutes
+                    const timeDiff = now - classEndTime;
+                    const minutesDiff = timeDiff / (1000 * 60);
+
+                    // If class ended 0-15 minutes ago, mark attendance
+                    if (minutesDiff >= 0 && minutesDiff <= 15) {
+                        const cellId = cls.id;
+
+                        // Check if not already marked
+                        if (!attendance[cellId] || !attendance[cellId].checked) {
+                            // Mark as present
+                            attendance[cellId] = {
+                                checked: true,
+                                subject: key,
+                                date: now.toISOString().split('T')[0]
+                            };
+
+                            // Save attendance
+                            const attendanceFile = path.join(__dirname, '../data/attendance_grid.json');
+                            fs.writeFileSync(attendanceFile, JSON.stringify(attendance, null, 2));
+
+                            console.log(`✅ Auto-marked attendance for ${subject.name} at ${cls.time_start}-${cls.time_end}`);
+
+                            // Notify users
+                            userIds.forEach(userId => {
+                                const message = `✅ Prezență marcată automat!\n\n📖 ${subject.name}\n🕐 ${cls.time_start}-${cls.time_end}\n📍 ${cls.room}\n\nPoți verifica în dashboard: http://localhost:3000/attendance-grid.html`;
+
+                                bot.sendMessage(userId, message).catch(err => {
+                                    console.error(`Error sending auto-attendance notification to ${userId}:`, err.message);
+                                });
+                            });
+                        }
+                    }
+                });
+            });
+        } catch (err) {
+            console.error('Error in auto-attendance:', err);
+        }
+    });
+}
+
 // Start notifications after 2 seconds
 setTimeout(() => {
     startNotifications();
     checkSnoozedNotifications();
+    startAutoAttendance();
 }, 2000);
 
 module.exports = { bot, startNotifications };
